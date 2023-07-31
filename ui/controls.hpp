@@ -31,7 +31,7 @@ class welcomeScreen
 		{
 			idc = 69691;
 			deletable = 0;
-			text = "img\altis.paa";
+			text = "img\altis_ca.paa";
 			style = ST_MULTI + ST_TITLE_BAR;
 			x = 0.257656 * safezoneW + safezoneX;
 			y = 0.181 * safezoneH + safezoneY;
@@ -182,6 +182,7 @@ class welcomeScreen
 			offsetPressedY = 0.002;
 			borderSize = 0;
 			onLoad =  "(_this # 0) ctrlEnable false;";
+			action = "[] call MRTM_fnc_updateViewDistance;";
 		};
 	};
 };
@@ -324,7 +325,7 @@ class rearmMenu
 		{
 			idc = 69691;
 			deletable = 0;
-			text = "img\classified.paa";
+			text = "img\classified_ca.paa";
 			style = ST_MULTI + ST_TITLE_BAR + ST_KEEP_ASPECT_RATIO;
 			x = 0.422656 * safezoneW + safezoneX;
 			y = 0.530 * safezoneH + safezoneY;
@@ -335,7 +336,7 @@ class rearmMenu
 		{
 			idc = 69691;
 			deletable = 0;
-			text = "img\classified.paa";
+			text = "img\classified_ca.paa";
 			style = ST_MULTI + ST_TITLE_BAR + ST_KEEP_ASPECT_RATIO;
 			x = 0.577344 * safezoneW + safezoneX;
 			y = 0.302 * safezoneH + safezoneY;
@@ -543,12 +544,22 @@ class MRTM_settingsMenu
 		class MRTMObjectsButton: RscCheckboxMRTM
 		{
 			idc = 2800;
-			action = "if (MRTM_syncObjects) then {MRTM_syncObjects = false} else {MRTM_syncObjects = true}; [] call MRTM_fnc_openMenu;";
+			action = "if (profileNamespace getVariable 'MRTM_syncObjects') then {(profileNamespace setVariable ['MRTM_syncObjects', false])} else {(profileNamespace setVariable ['MRTM_syncObjects', true])}; [] call MRTM_fnc_openMenu;";
 			x = 0.273125 * safezoneW + safezoneX;
 			y = 0.5044 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
 			tooltip = "Sync object rendering";
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMObjectsButtonText: RscStructuredTextMRTM
 		{
@@ -567,6 +578,174 @@ class MRTM_settingsMenu
 				shadow = 1;
 				size = 0.9;
 			};
+		};
+		class MRTMStatsText: RscStructuredTextMRTM
+		{
+			idc = 1140;
+			text = "Player Stats:";
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.5744 * safezoneH + safezoneY;
+			w = 0.159844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMTotalCPText: RscStructuredTextMRTM
+		{
+			idc = 1134;
+			text = "";
+			x = 0.285687 * safezoneW + safezoneX;
+			y = 0.5944 * safezoneH + safezoneY;
+			w = 0.164844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMTotalCPImg: RscPictureMRTM
+		{
+			idc = 1135;
+			deletable = 0;
+			text = "img\database_ca.paa";
+			style = ST_MULTI + ST_TITLE_BAR;
+			colorText[] = {1,1,1,1};
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.5944 * safezoneH + safezoneY;
+			w = 0.015244 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class MRTMWinRatio: RscStructuredTextMRTM
+		{
+			idc = 1136;
+			text = "";
+			x = 0.285687 * safezoneW + safezoneX;
+			y = 0.6164 * safezoneH + safezoneY;
+			w = 0.159844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMWinRatioImg: RscPictureMRTM
+		{
+			idc = 1137;
+			deletable = 0;
+			text = "a3\ui_f\data\gui\cfg\gametypes\seize_ca.paa";
+			style = ST_MULTI + ST_TITLE_BAR;
+			colorText[] = {1,1,1,1};
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.6164 * safezoneH + safezoneY;
+			w = 0.015244 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class MRTMsectorsSeized: RscStructuredTextMRTM
+		{
+			idc = 1138;
+			text = "";
+			x = 0.285687 * safezoneW + safezoneX;
+			y = 0.6384 * safezoneH + safezoneY;
+			w = 0.159844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMsectorsSeizedImg: RscPictureMRTM
+		{
+			idc = 1139;
+			deletable = 0;
+			text = "a3\ui_f_curator\data\cfgmpgametypes\zsc_ca.paa";
+			style = ST_MULTI + ST_TITLE_BAR;
+			colorText[] = {1,1,1,1};
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.6384 * safezoneH + safezoneY;
+			w = 0.015244 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class MRTMdistanceKill: RscStructuredTextMRTM
+		{
+			idc = 1141;
+			text = "";
+			x = 0.285687 * safezoneW + safezoneX;
+			y = 0.6584 * safezoneH + safezoneY;
+			w = 0.159844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMdistanceKillImg: RscPictureMRTM
+		{
+			idc = 1142;
+			deletable = 0;
+			text = "a3\ui_f\data\igui\cfg\simpletasks\types\kill_ca.paa";
+			style = ST_MULTI + ST_TITLE_BAR;
+			colorText[] = {1,1,1,1};
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.6584 * safezoneH + safezoneY;
+			w = 0.015244 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class MRTMkdRatio: RscStructuredTextMRTM
+		{
+			idc = 1143;
+			text = "";
+			x = 0.285687 * safezoneW + safezoneX;
+			y = 0.6784 * safezoneH + safezoneY;
+			w = 0.159844 * safezoneW;
+			h = 0.022 * safezoneH;
+			class Attributes
+			{
+				font = "PuristaMedium";
+				color = "#ffffff";
+				colorLink = "#D09B43";
+				align = "left";
+				shadow = 1;
+				size = 0.9;
+			};
+		};
+		class MRTMkdRatioImg: RscPictureMRTM
+		{
+			idc = 1144;
+			deletable = 0;
+			text = "a3\ui_f_curator\data\cfgmarkers\kia_ca.paa";
+			style = ST_MULTI + ST_TITLE_BAR;
+			colorText[] = {1,1,1,1};
+			x = 0.270987 * safezoneW + safezoneX;
+			y = 0.6784 * safezoneH + safezoneY;
+			w = 0.015244 * safezoneW;
+			h = 0.022 * safezoneH;
 		};
 		class MRTMObjectsText: RscStructuredTextMRTM
 		{
@@ -739,67 +918,136 @@ class MRTM_settingsMenu
 		class MRTMOtherButton1: RscCheckboxMRTM
 		{
 			idc = 2801;
-			action = "if (player getVariable 'MRTM_3rdPersonDisabled') then {player setVariable ['MRTM_3rdPersonDisabled', false, [2, clientOwner]];} else {player setVariable ['MRTM_3rdPersonDisabled', true, [2, clientOwner]];}";
+			action = "if (profileNamespace getVariable ['MRTM_3rdPersonDisabled', false]) then {player setVariable ['MRTM_3rdPersonDisabled', false, [2, clientOwner]]; profileNamespace setVariable ['MRTM_3rdPersonDisabled', false];} else {player setVariable ['MRTM_3rdPersonDisabled', true, [2, clientOwner]]; profileNamespace setVariable ['MRTM_3rdPersonDisabled', true];}";
 			toolTip = "Recieve a 100% CP bonus.";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.5 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton2: RscCheckboxMRTM
 		{
 			idc = 2802;
-			action = "if (MRTM_muteVoiceInformer) then {MRTM_muteVoiceInformer = false} else {MRTM_muteVoiceInformer = true}";
+			action = "if (profileNamespace getVariable ['MRTM_muteVoiceInformer', false]) then {(profileNamespace setVariable ['MRTM_muteVoiceInformer', false])} else {(profileNamespace setVariable ['MRTM_muteVoiceInformer', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.533 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton3: RscCheckboxMRTM
 		{
 			idc = 2803;
-			action = "if (MRTM_playKillSound) then {MRTM_playKillSound = false} else {MRTM_playKillSound = true}";
+			action = "if (profileNamespace getVariable ['MRTM_playKillSound', true]) then {(profileNamespace setVariable ['MRTM_playKillSound', false])} else {(profileNamespace setVariable ['MRTM_playKillSound', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.566 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton4: RscCheckboxMRTM
 		{
 			idc = 2804;
-			action = "if (MRTM_EnableRWR) then {MRTM_EnableRWR = false} else {MRTM_EnableRWR = true}";
+			action = "if (profileNamespace getVariable ['MRTM_EnableRWR', true]) then {(profileNamespace setVariable ['MRTM_EnableRWR', false])} else {(profileNamespace setVariable ['MRTM_EnableRWR', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.599 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton5: RscCheckboxMRTM
 		{
 			idc = 2805;
-			action = "if (MRTM_disableHint) then {MRTM_disableHint = false} else {MRTM_disableHint = true}";
+			action = "if (profileNamespace getVariable ['MRTM_disableHint', true]) then {(profileNamespace setVariable ['MRTM_disableHint', false])} else {(profileNamespace setVariable ['MRTM_disableHint', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.632 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton6: RscCheckboxMRTM
 		{
 			idc = 2806;
-			action = "if (MRTM_smallAnnouncerText) then {MRTM_smallAnnouncerText = false} else {MRTM_smallAnnouncerText = true}";
+			action = "if (profileNamespace getVariable ['MRTM_smallAnnouncerText', false]) then {(profileNamespace setVariable ['MRTM_smallAnnouncerText', false])} else {(profileNamespace setVariable ['MRTM_smallAnnouncerText', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.665 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton7: RscCheckboxMRTM
 		{
 			idc = 2807;
-			action = "";
-			onLoad =  "(_this # 0) ctrlEnable false;";
+			action = "if (profileNamespace getVariable ['MRTM_spawnEmpty', false]) then {(profileNamespace setVariable ['MRTM_spawnEmpty', false])} else {(profileNamespace setVariable ['MRTM_spawnEmpty', true])}";
 			x = 0.463906 * safezoneW + safezoneX;
 			y = 0.698 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherButton8: RscCheckboxMRTM
 		{
@@ -810,6 +1058,16 @@ class MRTM_settingsMenu
 			y = 0.731 * safezoneH + safezoneY;
 			w = 0.0154688 * safezoneW;
 			h = 0.022 * safezoneH;
+			textureUnChecked = "Img\toggle-left_ca.paa";
+			textureChecked = "Img\toggle-right_ca.paa";
+			textureFocusedChecked = "Img\toggle-right_ca.paa";
+			textureFocusedUnchecked = "Img\toggle-left_ca.paa";
+			textureHoverChecked = "Img\toggle-right_ca.paa";
+			textureHoverUnchecked = "Img\toggle-left_ca.paa";
+			texturePressedChecked = "Img\toggle-right_ca.paa";
+			texturePressedUnchecked = "Img\toggle-left_ca.paa";
+			textureDisabledChecked = "Img\toggle-right_ca.paa";
+			textureDisabledUnchecked = "Img\toggle-left_ca.paa";
 		};
 		class MRTMOtherText1: RscStructuredTextMRTM
 		{
@@ -916,7 +1174,7 @@ class MRTM_settingsMenu
 		class MRTMOtherText7: RscStructuredTextMRTM
 		{
 			idc = 1123;
-			text = "";
+			text = "Spawn vehicles with empty inventory";
 			x = 0.481437 * safezoneW + safezoneX;
 			y = 0.698 * safezoneH + safezoneY;
 			w = 0.221719 * safezoneW;

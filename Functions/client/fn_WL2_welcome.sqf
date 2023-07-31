@@ -16,10 +16,14 @@ hRead = false;
 }];
 
 0 spawn {
-	while {dialog} do {
-		waitUntil {sleep 0.1; hRead == true};
-		_time = serverTime + 5;
-		waitUntil {sleep 0.1; serverTime > _time};
+	if (["(EU) #11", serverName] call BIS_fnc_inString) then {
+		while {dialog} do {
+			waitUntil {sleep 0.1; hRead == true};
+			_time = serverTime + 5;
+			waitUntil {sleep 0.1; serverTime > _time};
+			ctrlEnable [1, true];
+		};
+	} else {
 		ctrlEnable [1, true];
 	};
 };
@@ -58,17 +62,17 @@ lbSetData[69695, _scripts, "scripts"];
 lbSetCurSel [69695, _pageAbt];
 
 lbSetText[69695, _pageAbt, localize "STR_MRTM_welcomeInteract_01"];
-lbSetPicture [69695, _pageAbt, 'img\star.paa'];
+lbSetPicture [69695, _pageAbt, 'img\star_ca.paa'];
 lbSetText[69695, _pageHow, localize "STR_MRTM_welcomeInteract_02"];
-lbSetPicture [69695, _pageHow, 'img\icon_important.paa'];
+lbSetPicture [69695, _pageHow, 'img\icon_important_ca.paa'];
 lbSetText[69695, _theTeam, localize "STR_MRTM_welcomeInteract_03"];
-lbSetPicture [69695, _theTeam, 'img\icon-user.paa'];
+lbSetPicture [69695, _theTeam, 'img\icon-user_ca.paa'];
 lbSetText[69695, _dc, localize "STR_MRTM_welcomeInteract_04"];
-lbSetPicture [69695, _dc, 'img\link_out_white.paa'];
+lbSetPicture [69695, _dc, 'img\link_out_white_ca.paa'];
 lbSetText[69695, _changelog, localize "STR_MRTM_welcomeInteract_05"];
-lbSetPicture [69695, _changelog, 'img\icon_update.paa'];
+lbSetPicture [69695, _changelog, 'img\icon_update_ca.paa'];
 lbSetText[69695, _scripts, localize "STR_MRTM_welcomeInteract_06"];
-lbSetPicture [69695, _scripts, 'img\icon-file.paa'];
+lbSetPicture [69695, _scripts, 'img\icon-file_ca.paa'];
 
 
 while {dialog} do {
@@ -102,7 +106,7 @@ while {dialog} do {
 		};
 
 		case "pageHow": {
-			ctrlSetText [69694, "img\wl.paa"];
+			ctrlSetText [69694, "img\wl_ca.paa"];
 			hRead = true;
 
 			private _control = findDisplay 6969 displayCtrl 69696;
@@ -124,7 +128,7 @@ while {dialog} do {
 		};
 
 		case "theCom": { 
-			ctrlSetText [69694, "img\sniper.paa"];
+			ctrlSetText [69694, "img\sniper_ca.paa"];
 
 			private _control = findDisplay 6969 displayCtrl 69696;
 			_control ctrlSetStructuredText composeText [
@@ -154,7 +158,7 @@ while {dialog} do {
 		};
 
 		case "discord": { 
-			ctrlSetText [69694, "img\wasp.paa"];
+			ctrlSetText [69694, "img\wasp_ca.paa"];
 
 			private _control = findDisplay 6969 displayCtrl 69696;
 			_control ctrlSetStructuredText composeText [
@@ -168,7 +172,7 @@ while {dialog} do {
 		};
 
 		case "changelog": {
-			ctrlSetText [69694, "img\arma.paa"]; 
+			ctrlSetText [69694, "img\arma_ca.paa"]; 
 
 			private _control = findDisplay 6969 displayCtrl 69696;
 			_control ctrlSetStructuredText composeText [
@@ -237,33 +241,26 @@ while {dialog} do {
 			
 			private _control = findDisplay 6969 displayCtrl 69696;
 			_control ctrlSetStructuredText composeText [
-			"APS System", lineBreak, 
-			"", lineBreak,
-			"For the APS System we use drongos Active Protection System.", lineBreak,
-			"You can use CTRL + G to check your APS Amount.", lineBreak,
-			"", lineBreak,
-			parseText "<img size='5' image='img\drongo.paa'/>", lineBreak,
-			"", lineBreak,
 			"Aircraft Loadout", lineBreak,
 			"", lineBreak,
 			"For the custom aircraft loadout we use Grumpy Old Man's mod.", lineBreak,
 			"You can order vehicle ammo box close to your aircraft and then look at the aircraft and press 'Rearm' to change you  loadout.", lineBreak,
 			"", lineBreak,
-			parseText "<img  size='5' image='img\wasp.paa'/>", lineBreak,
+			parseText "<img  size='5' image='img\wasp_ca.paa'/>", lineBreak,
 			"", lineBreak,
 			"GF Earplugs", lineBreak,
 			"", lineBreak,
 			"We use George Floros's earplug script wich allows you to lower your volume by the press of 1 button.", lineBreak,
 			"You can press the INSERT key to lower your volume.", lineBreak,
 			"", lineBreak,
-			parseText "<img  size='5' image='img\earPlugs.paa'/>", lineBreak,
+			parseText "<img  size='5' image='img\earPlugs_ca.paa'/>", lineBreak,
 			"", lineBreak,
 			"Vehicle Unflip", lineBreak,
 			"", lineBreak,
 			"Oh no did your vehicle flip over? Simply walk up to it and use your scroll wheel to unflip the vehicle.", lineBreak,
 			"Note: Static defenses may experience difficulty flipping over.", lineBreak,
 			"", lineBreak,
-			parseText "<img  size='5' image='img\unflip.paa'/>", lineBreak,
+			parseText "<img  size='5' image='img\unflip_ca.paa'/>", lineBreak,
 			""
 			];
 		};

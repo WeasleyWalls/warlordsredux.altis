@@ -10,10 +10,7 @@ if (isNull _owner && isServer) then {
 if (isPlayer _owner) then {
 	WAS_store = true;
 	_asset setVariable ["BIS_WL_ownerAsset", (group _owner), [2, clientOwner]];
-	_asset setVariable ["BIS_WL_iconText", getText (configFile >> "CfgVehicles" >> typeOf _asset >> "displayName")];
-	if !((typeOf _asset) in dapsDazzler) then {
-		_asset spawn DAPS_fnc_RegisterVehicle;
-	};
+	_asset spawn DAPS_fnc_RegisterVehicle;
 
 	if (_asset isKindOf "Man") then {
 		_asset call BIS_fnc_WL2_sub_assetAssemblyHandle;
@@ -43,7 +40,6 @@ if (isPlayer _owner) then {
 			case (_asset isKindOf "I_Truck_02_MRL_F"): { WL_MAINTENANCE_COOLDOWN_REARM_Artillery };
 			default { WL_MAINTENANCE_COOLDOWN_REARM };
 		};
-		
 		_asset setVariable ["BIS_WL_nextRearm", serverTime + _rearmTime]; 
 		
 		private _defaultMags = [];
@@ -63,10 +59,12 @@ if (isPlayer _owner) then {
 				waitUntil {sleep WL_TIMEOUT_STANDARD; serverTime > _t || !alive _this || vehicle player == _this};
 				BIS_WL_recentlyPurchasedAssets = BIS_WL_recentlyPurchasedAssets - [_this];
 			};
-		};
-		
-		if !(typeOf _asset == "O_T_Truck_03_device_ghex_F" || typeOf _asset == "O_Truck_03_device_F") then {
-			_asset spawn BIS_fnc_WL2_sub_rearmAction;
+
+			if (_asset isKindOf "Air") then {
+				_asset spawn BIS_fnc_WL2_sub_rearmActionAir;
+			} else {
+				_asset call BIS_fnc_WL2_sub_rearmAction;
+			};
 		};
 
 		if !(typeOf _asset == "B_Truck_01_medical_F" || {typeOf _asset == "O_Truck_03_medical_F" || {typeOf _asset == "Land_Pod_Heli_Transport_04_medevac_F" || {typeOf _asset == "B_Slingload_01_Medevac_F"}}}) then {
@@ -74,6 +72,32 @@ if (isPlayer _owner) then {
 			_asset call BIS_fnc_WL2_sub_vehicleKickAction;
 		};
 
+		if (WL_LOGISTICS_ENABLED && (_asset isKindOf "Truck_F" || _asset isKindOf "Slingload_base_F")) then {
+			switch (typeOf _asset) do {
+				case "B_Truck_01_ammo_F";
+				case "B_Truck_01_Repair_F";
+				case "B_Truck_01_fuel_F";
+				case "O_Truck_03_ammo_F";
+				case "O_Truck_03_repair_F";
+				case "O_Truck_03_fuel_F";
+				case "B_Slingload_01_Ammo_F";
+				case "B_Slingload_01_Repair_F";
+				case "B_Slingload_01_Fuel_F";
+				case "Land_Pod_Heli_Transport_04_ammo_F";
+				case "Land_Pod_Heli_Transport_04_repair_F";
+				case "Land_Pod_Heli_Transport_04_fuel_F": {
+					_asset call BIS_fnc_WL2_sub_loadSupplies;
+				};
+				default {};
+			};
+		};
+
+		if (profileNamespace getVariable ["MRTM_spawnEmpty", false]) then {
+			clearMagazineCargoGlobal _asset; 
+			clearItemCargoGlobal _asset;
+			clearWeaponCargoGlobal _asset;
+		};
+		
 		_asset spawn {
 			params ["_asset"];
 			_repairActionID = -1;
@@ -119,7 +143,7 @@ if (isPlayer _owner) then {
 			_asset removeAction _repairActionID;
 		};
 
-		if (typeOf _asset == "B_Radar_System_01_F" || typeOf _asset == "O_Radar_System_02_F") then {
+		if (typeOf _asset == "B_Radar_System_01_F" || {typeOf _asset == "O_Radar_System_02_F"}) then {
 			_asset spawn {
 				params ["_asset"];
 
@@ -142,13 +166,13 @@ if (isPlayer _owner) then {
 			};
 		};
 
-		if !(_assembled || _asset isKindOf "Thing") then {
-			if (typeOf _asset == "O_T_Truck_03_device_ghex_F" || typeOf _asset == "O_Truck_03_device_F") then {
-				_asset setVariable ["dazzlerActivated", false];
-				_asset call BIS_fnc_WL2_sub_dazzlerAction;
+		if !(_assembled || {_asset isKindOf "Thing"}) then {
+			if (typeOf _asset == "O_T_Truck_03_device_ghex_F" || {typeOf _asset == "O_Truck_03_device_F"}) then {
+				_asset setVariable ["apsDisabled", true];
+				hintSilent parseText format[localize "STR_A3_WL_dazzler_instruction", actionKeysNames "cycleThrownItems"];
 			};
 
-			if (typeOf _asset == "B_Truck_01_flatbed_F" || typeOf _asset == "B_T_VTOL_01_vehicle_F" || typeOf _asset == "O_T_VTOL_02_vehicle_dynamicLoadout_F") then {
+			if (typeOf _asset == "B_Truck_01_flatbed_F" || {typeOf _asset == "B_T_VTOL_01_vehicle_F" || {typeOf _asset == "O_T_VTOL_02_vehicle_dynamicLoadout_F"}}) then {
 				_asset call BIS_fnc_WL2_sub_logisticsAddAction;
 				if (side _owner == east) then {
 					_asset setObjectTextureGlobal [0, "A3\Soft_F_Exp\Truck_01\Data\Truck_01_ext_01_olive_CO.paa"]; //Truck Cabin
@@ -183,32 +207,5 @@ if (isPlayer _owner) then {
 		};
 	};
 
-	private _removeActionID = _asset addAction [
-		"",
-		{
-			_displayName = getText (configFile >> "CfgVehicles" >> (typeOf (_this # 0)) >> "displayName");
-			_result = [format ["Are you sure you would like to delete: %1", _displayName], "Delete asset", true, true] call BIS_fnc_guiMessage;
-
-			if (_result) exitWith {
-				_ownedVehiclesVarName = format ["BIS_WL_%1_ownedVehicles", getPlayerUID player];
-				missionNamespace setVariable [_ownedVehiclesVarName, WL_PLAYER_VEHS - [_this # 0]];
-				publicVariableServer _ownedVehiclesVarName;
-				if ((_this # 0) isKindOf "Man") then {
-					deleteVehicle (_this # 0);
-				} else {
-					(_this # 0) spawn BIS_fnc_WL2_sub_deleteAsset;
-				};
-			};
-		},
-		[],
-		-98,
-		false,
-		true,
-		"",
-		"alive _target && {vehicle _this != _target && {(group _this) == (_target getVariable ['BIS_WL_ownerAsset', grpNull])}}",
-		30,
-		false
-	];
-
-	_asset setUserActionText [_removeActionID, format ["<t color = '#ff4b4b'>%1</t>", localize "STR_xbox_hint_remove"], "<img size='2' color='#ff4b4b' image='\a3\ui_f\data\IGUI\Cfg\Actions\Obsolete\ui_action_cancel_ca'/>"];
+	_asset call BIS_fnc_WL2_sub_removeAction;
 };

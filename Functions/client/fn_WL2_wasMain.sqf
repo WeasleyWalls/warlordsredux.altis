@@ -18,7 +18,7 @@ player addEventHandler ["Fired", {
 }];
 
 while {!BIS_WL_missionEnd} do {
-	sleep _sleepDuration;
+	sleep (if (player getVariable ["BIS_WL_incomeBlocked", false]) then {10} else {_sleepDuration});
 	private _inActScore = 0;
 
 	//Moved further than _minimumDistance in the last cycle
@@ -63,7 +63,7 @@ while {!BIS_WL_missionEnd} do {
 	};
 
 	if (_inActScore > _maxInActScore) then {
-		hint "You are too inactive to earn passive income";
+		hintSilent "You are too inactive to earn passive income";
 		player setVariable ["BIS_WL_incomeBlocked", true, true];
 	} else {
 		player setVariable ["BIS_WL_incomeBlocked", false, true];
