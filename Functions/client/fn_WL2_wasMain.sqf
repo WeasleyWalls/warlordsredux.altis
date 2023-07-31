@@ -5,7 +5,7 @@ WAS_fired = false;
 private _maxInActScore = 2;
 private _minimumDistance = 25;
 private _sleepDuration = 300;
-private _currentPos = getPos player;
+private _currentPos = getPos player; //test
 
 player addEventHandler ["HandleScore", {
 	params ["_unit", "_object", "_score"];
