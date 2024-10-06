@@ -95,6 +95,10 @@ class CfgRemoteExec {
 		class SQD_fnc_server {
 			allowedTargets = 2;
 		};
+		
+		class BIS_fnc_WL2_friendlyFireHandleClient {
+			allowedTargets = 1;
+		};
 
 		//Don't touch
 		class BIS_fnc_effectKilledAirDestruction {allowedTargets = 0; jip = 0;};
