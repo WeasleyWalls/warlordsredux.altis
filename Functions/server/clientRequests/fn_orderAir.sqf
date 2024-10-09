@@ -40,9 +40,9 @@ private _asset = if (_isUav) then {
 	createVehicle [_class, _spawnPos, [], 0, "NONE"];
 };
 
+waitUntil {sleep 0.1; !(isNull _asset)};
 _asset setDir _dir;
 
-waitUntil {sleep 0.1; !(isNull _asset)};
 _asset enableWeaponDisassembly false;
 _asset setVehicleReportRemoteTargets true;
 _asset setVehicleReceiveRemoteTargets true;
